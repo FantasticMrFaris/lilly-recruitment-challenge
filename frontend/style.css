@@ -30,3 +30,143 @@ body {
 }
 
 /* ---- Your custom styles below ---- */
+
+/* Layout for header + main content */
+header {
+    max-width: 960px;
+    margin: 0 auto 1rem;
+    padding: 0 1rem;
+}
+
+header h1 {
+    margin: 0.5rem 0;
+    font-size: 2rem;
+}
+
+/* Main layout */
+main {
+    position: relative;
+    max-width: 960px;
+    margin: 0 auto 2rem;
+    padding: 1.5rem 1rem;
+}
+
+/* Background image behind the app (put images/bg.jpg in your project) */
+main::before {
+    content: "";
+    position: fixed;
+    inset: 30px 0 0 0;               /* start below disclaimer */
+    background:
+        linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.9)),
+        url("images/bg.jpg") center/cover no-repeat;
+    z-index: -1;
+}
+
+/* Sections as cards */
+section {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+section h2 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+}
+
+/* All Medicines header + button in one line */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Message area */
+#message {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+#message.info {
+    color: #555;
+}
+#message.success {
+    color: #15803d;
+}
+#message.error {
+    color: #b91c1c;
+}
+
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    margin-top: 0.5rem;
+}
+
+th, td {
+    padding: 0.5rem 0.6rem;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+th {
+    text-align: left;
+    font-weight: bold;
+    color: #555;
+}
+
+tbody tr:hover {
+    background-color: #f1f5f9;
+}
+
+/* Forms */
+form {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 0.5rem;
+}
+
+form input {
+    padding: 0.45rem 0.6rem;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 600px) {
+    form {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Buttons */
+button {
+    padding: 0.4rem 0.9rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    background-color: #2563eb;
+    color: #ffffff;
+    transition: background-color 0.15s ease, transform 0.05s ease;
+}
+
+button:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+/* Extra button types if you want them */
+.btn-delete {
+    background-color: #e5e7eb;
+    color: #111827;
+}
+
+.btn-delete:hover {
+    background-color: #fecaca;
+}

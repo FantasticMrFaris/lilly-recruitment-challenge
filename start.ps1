@@ -4,12 +4,6 @@ $venvDir = "venv"
 # Path to backend directory
 $backendDir = "backend"
 
-# Path to requirements file
-$requirementsFile = "requirements.txt"
-
-# Path to python executable
-$pythonScript = "main.py"
-
 # Check if venv directory exists
 if (-Not (Test-Path $venvDir)) {
     # Create venv directory
@@ -22,7 +16,7 @@ if (-Not (Test-Path $venvDir)) {
 
     # Install requirements
     Write-Host "Installing python dependencies..."
-    pip install -r $requirementsFile
+    pip install -r "$backendDir\requirements.txt"
 } else {
     # Activate venv
     Write-Host "Virtual environment found."
@@ -31,7 +25,7 @@ if (-Not (Test-Path $venvDir)) {
 }
 
 # Run python script
-
-Set-Location $backendDir
+Push-Location $backendDir
 Write-Host "Running main python script..."
-python $pythonScript
+python main.py
+Pop-Location

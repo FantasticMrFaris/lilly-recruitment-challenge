@@ -21,6 +21,8 @@ Run this module directly to start the FastAPI application.
 """
 import uvicorn
 import json
+import os
+
 
 app = FastAPI()
 
@@ -32,6 +34,20 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_FILE = os.path.join(BASE_DIR, "data.json")
+
+
+def load_meds():
+    with open(DATA_FILE, "r", encoding="utf-8") as meds:
+        return json.load(meds)
+
+
+def save_meds(current_db: dict):
+    with open(DATA_FILE, "w", encoding="utf-8") as meds:
+        json.dump(current_db, meds)
+
+
 @app.get("/medicines")
 def get_all_meds():
     """
@@ -39,9 +55,9 @@ def get_all_meds():
     Returns:
         dict: A dictionary of all medicines
     """
-    with open('data.json') as meds:
-        data = json.load(meds)
+    data = load_meds()
     return data
+
 
 @app.get("/medicines/{name}")
 def get_single_med(name: str):
@@ -52,13 +68,12 @@ def get_single_med(name: str):
     Returns:
         dict: A dictionary containing the medicine details
     """
-    with open('data.json') as meds:
-        data = json.load(meds)
-        for med in data["medicines"]:
-            print(med)
-            if med['name'] == name:
-                return med
+    data = load_meds()
+    for med in data["medicines"]:
+        if med["name"] == name:
+            return med
     return {"error": "Medicine not found"}
+
 
 @app.post("/create")
 def create_med(name: str = Form(...), price: float = Form(...)):
@@ -71,15 +86,12 @@ def create_med(name: str = Form(...), price: float = Form(...)):
     Returns:
         dict: A message confirming the medicine was created successfully.
     """
-    with open('data.json', 'r+') as meds:
-        current_db = json.load(meds)
-        new_med = {"name": name, "price": price}
-        current_db["medicines"].append(new_med)
-        meds.seek(0)
-        json.dump(current_db, meds)
-        meds.truncate()
-        
+    current_db = load_meds()
+    new_med = {"name": name, "price": price}
+    current_db["medicines"].append(new_med)
+    save_meds(current_db)
     return {"message": f"Medicine created successfully with name: {name}"}
+
 
 @app.post("/update")
 def update_med(name: str = Form(...), price: float = Form(...)):
@@ -92,16 +104,14 @@ def update_med(name: str = Form(...), price: float = Form(...)):
     Returns:
         dict: A message confirming the medicine was updated successfully.
     """
-    with open('data.json', 'r+') as meds:
-        current_db = json.load(meds)
-        for med in current_db["medicines"]:
-            if med['name'] == name:
-                med['price'] = price
-                meds.seek(0)
-                json.dump(current_db, meds)
-                meds.truncate()
-                return {"message": f"Medicine updated successfully with name: {name}"}
+    current_db = load_meds()
+    for med in current_db["medicines"]:
+        if med["name"] == name:
+            med["price"] = price
+            save_meds(current_db)
+            return {"message": f"Medicine updated successfully with name: {name}"}
     return {"error": "Medicine not found"}
+
 
 @app.delete("/delete")
 def delete_med(name: str = Form(...)):
@@ -113,18 +123,17 @@ def delete_med(name: str = Form(...)):
     Returns:
         dict: A message confirming the medicine was deleted successfully.
     """
-    with open('data.json', 'r+') as meds:
-        current_db = json.load(meds)
-        for med in current_db["medicines"]:
-            if med['name'] == name:
-                current_db["medicines"].remove(med)
-                meds.seek(0)
-                json.dump(current_db, meds)
-                meds.truncate()
-                return {"message": f"Medicine deleted successfully with name: {name}"}
+    current_db = load_meds()
+    for med in list(current_db["medicines"]):
+        if med["name"] == name:
+            current_db["medicines"].remove(med)
+            save_meds(current_db)
+            return {"message": f"Medicine deleted successfully with name: {name}"}
     return {"error": "Medicine not found"}
 
+
 # Add your average function here
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -3,19 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Medicine Tracker</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="disclaimer" id="disclaimer">
+    <div class="disclaimer">
         Disclaimer: All medicine names and prices used in this application are fictional and do not represent any real medicine(s).
     </div>
-    <header>
-        <h1>Medicine Tracker</h1>
-    </header>
-    <main>
 
+    <header class="header">
+        <div class="logo">💊 Medicine Tracker</div>
+        <nav class="nav">
+            <a href="index.html" class="nav-link active">Home</a>
+            <a href="stats.html" class="nav-link">Statistics</a>
+            <a href="about.html" class="nav-link">About</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section id="medicines" class="card">
+            <div class="section-header">
+                <h2>All Medicines</h2>
+                <button id="refresh-medicines" type="button" class="btn primary">Refresh list</button>
+            </div>
+
+            <div id="message" class="message" aria-live="polite"></div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Price (£)</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="medicines-body"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Create Medicine</h2>
+            <form id="create-form" class="form-grid">
+                <input id="create-name" name="name" placeholder="Name" required>
+                <input id="create-price" name="price" type="number" step="0.01" placeholder="Price" required>
+                <button type="submit" class="btn success">Create</button>
+            </form>
+        </section>
+
+        <section class="card">
+            <h2>Update Medicine</h2>
+            <form id="update-form" class="form-grid">
+                <input id="update-name" name="name" placeholder="Name" required>
+                <input id="update-price" name="price" type="number" step="0.01" placeholder="New price" required>
+                <button type="submit" class="btn warning">Update</button>
+            </form>
+        </section>
     </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 Medicine Tracker</p>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
